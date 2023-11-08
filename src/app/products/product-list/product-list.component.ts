@@ -4,9 +4,10 @@ import { Subscription } from 'rxjs';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
+import { Store } from '@ngrx/store';
 
 @Component({
-  selector: 'pm-product-list',
+  selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
@@ -22,7 +23,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   selectedProduct!: Product | null;
   sub!: Subscription;
 
-  constructor(private productService: ProductService) { }
+  constructor(private store:Store<any>,private productService: ProductService) { }
 
   ngOnInit(): void {
     this.sub = this.productService.selectedProductChanges$.subscribe(
@@ -33,6 +34,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
       next: (products: Product[]) => this.products = products,
       error: err => this.errorMessage = err
     });
+    this.store.select('products').subscribe(
+      products=>{
+        if(products){
+          this.displayCode=products.showProductCode;
+        }
+      }
+    )
   }
 
   ngOnDestroy(): void {
@@ -40,7 +48,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   checkChanged(): void {
-    this.displayCode = !this.displayCode;
+    this.store.dispatch(
+      {type:'[Product] Toggle Product Code'}
+    )
   }
 
   newProduct(): void {
