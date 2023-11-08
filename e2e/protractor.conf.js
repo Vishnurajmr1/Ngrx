@@ -2,6 +2,7 @@
 // Protractor configuration file, see link for more information
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 
+// @ts-ignore
 const { SpecReporter } = require('jasmine-spec-reporter');
 
 /**
@@ -24,6 +25,7 @@ exports.config = {
     print: function() {}
   },
   onPrepare() {
+    // @ts-ignore
     require('ts-node').register({
       project: require('path').join(__dirname, './tsconfig.json')
     });
