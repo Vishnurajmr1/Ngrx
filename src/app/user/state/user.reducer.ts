@@ -5,11 +5,13 @@ import * as UserActions from './user.actions';
 export interface UserState{
   maskUsername:boolean;
   currentUser:User|null;
+  error:string;
 }
 
 const initialState:UserState={
   maskUsername:true,
-  currentUser:null
+  currentUser:null,
+  error:''
 }
 
 export const getUserFeatureState=createFeatureSelector<UserState>('users');
@@ -21,6 +23,11 @@ export const getMaskUserName=createSelector(
 export const getCurrentUser=createSelector(
   getUserFeatureState,
   state=>state.currentUser
+)
+
+export const getError=createSelector(
+  getUserFeatureState,
+  state=>state.error
 )
 export const userReducer = createReducer(
   initialState,
