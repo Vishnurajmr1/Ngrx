@@ -33,12 +33,22 @@ export const updateProduct = createAction(
   props<{ product: Product }>()
 );
 
-export const updateProductSuccess=createAction(
+export const updateProductSuccess = createAction(
   '[Product] Update Product Success',
-  props<{product:Product}>()
-)
+  props<{ product: Product }>()
+);
 
-export const updateProductFailure=createAction(
+export const updateProductFailure = createAction(
   '[Product] Update Product Fail',
-  props<{error:string}>()
-)
+  props<{ error: string }>()
+);
+
+export const createProduct = createAction(
+  '[Product] Create Product',
+  props<{ newProduct: Product }>()
+);
+
+export const createProductSuccess = createAction(
+  '[Product] Create Product Success'
+);
+export const creatProductFail = createAction('[Product] Create Fail');

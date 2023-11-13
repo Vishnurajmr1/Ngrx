@@ -49,10 +49,10 @@ export const getCurrentProduct = createSelector(
         starRating: 0,
       };
     } else {
-      const foundProduct= currentProductId
+      const foundProduct = currentProductId
         ? state.products.find((p) => p.id === currentProductId)
         : null;
-        return foundProduct!==undefined?foundProduct:null;
+      return foundProduct !== undefined ? foundProduct : null;
     }
   }
 );
@@ -102,6 +102,22 @@ export const productReducer = createReducer<ProductState>(
     return {
       ...state,
       products: [],
+      error: action.error,
+    };
+  }),
+  on(ProductActions.updateProductSuccess, (state, action): ProductState => {
+    const updatedProduct = state.products.map((item) =>
+      action.product.id === item.id ? action.product : item
+    );
+    return {
+      ...state,
+      products: updatedProduct,
+      error: '',
+    };
+  }),
+  on(ProductActions.updateProductFailure, (state, action): ProductState => {
+    return {
+      ...state,
       error: action.error,
     };
   })
