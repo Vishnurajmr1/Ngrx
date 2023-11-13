@@ -7,7 +7,7 @@ import { Product } from '../product';
 import { ProductService } from '../product.service';
 import { GenericValidator } from '../../shared/generic-validator';
 import { NumberValidators } from '../../shared/number.validator';
-import { Observable, tap } from 'rxjs';
+import { Observable, filter, tap } from 'rxjs';
 
 @Component({
   selector: 'app-product-edit',
@@ -70,7 +70,8 @@ export class ProductEditComponent implements OnInit {
 
     // Watch for changes to the currently selected product
     this.product$=this.store
-      .select(getCurrentProduct).pipe(tap(currentProduct=>this.displayProduct(currentProduct)))
+      .select(getCurrentProduct).pipe(filter(currentProduct=>currentProduct?.id!==undefined),
+        tap(currentProduct=>this.displayProduct(currentProduct)))
 
     // Watch for value changes for validation
     this.productForm.valueChanges.subscribe(
@@ -89,7 +90,7 @@ export class ProductEditComponent implements OnInit {
     );
   }
 
-  displayProduct(product: Product | null): void {
+  displayProduct(product: Product | null|undefined): void {
     // Set the local product property
     if (product) {
       // Reset the form back to pristine
@@ -144,7 +145,7 @@ export class ProductEditComponent implements OnInit {
           this.productService.createProduct(product).subscribe({
             next: (p) =>
               this.store.dispatch(
-                ProductActions.setCurrentProduct({ product: p })
+                ProductActions.setCurrentProduct({ currentProductId: p.id })
               ),
             error: (err) => (this.errorMessage = err),
           });
@@ -152,7 +153,7 @@ export class ProductEditComponent implements OnInit {
           this.productService.updateProduct(product).subscribe({
             next: (p) =>
               this.store.dispatch(
-                ProductActions.setCurrentProduct({ product: p })
+                ProductActions.setCurrentProduct({ currentProductId: p.id })
               ),
             error: (err) => (this.errorMessage = err),
           });

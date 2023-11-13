@@ -22,7 +22,7 @@ export class ProductListComponent implements OnInit {
 
   // Used to highlight the selected product in the list
   products$!: Observable<Product[]>;
-  selectedProduct$!: Observable<Product | null>;
+  selectedProduct$!: Observable<Product | null | undefined>;
   displayCode$!: Observable<boolean>;
   errorMessage$!: Observable<string>;
 
@@ -30,7 +30,7 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.products$ = this.store.select(getProducts);
-    this.errorMessage$=this.store.select(getError)
+    this.errorMessage$ = this.store.select(getError);
     this.store.dispatch(ProductActions.loadProducts());
     this.selectedProduct$ = this.store.select(getCurrentProduct);
     this.displayCode$ = this.store.select(getShowProductCode);
@@ -45,6 +45,8 @@ export class ProductListComponent implements OnInit {
   }
 
   productSelected(product: Product): void {
-    this.store.dispatch(ProductActions.setCurrentProduct({ product }));
+    this.store.dispatch(
+      ProductActions.setCurrentProduct({ currentProductId: product.id })
+    );
   }
 }
