@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { State, getCurrentProduct } from '../state/product.reducer';
 import * as ProductActions from '../state/product.actions';
 import { Product } from '../product';
-import { ProductService } from '../product.service';
 import { GenericValidator } from '../../shared/generic-validator';
 import { NumberValidators } from '../../shared/number.validator';
 import { Observable, filter, tap } from 'rxjs';
@@ -29,7 +28,7 @@ export class ProductEditComponent implements OnInit {
   constructor(
     private store: Store<State>,
     private fb: FormBuilder
-  ) // private productService: ProductService
+  )
   {
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.

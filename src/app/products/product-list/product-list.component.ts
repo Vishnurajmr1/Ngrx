@@ -1,52 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Product } from '../product';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import {
-  State,
-  getCurrentProduct,
-  getError,
-  getProducts,
-  getShowProductCode,
-} from '../state/product.reducer';
-import * as ProductActions from '../state/product.actions';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent {
   pageTitle = 'Products';
 
-  // Used to highlight the selected product in the list
-  products$!: Observable<Product[]>;
-  selectedProduct$!: Observable<Product | null | undefined>;
-  displayCode$!: Observable<boolean>;
-  errorMessage$!: Observable<string>;
-
-  constructor(private store: Store<State>) {}
-
-  ngOnInit(): void {
-    this.products$ = this.store.select(getProducts);
-    this.errorMessage$ = this.store.select(getError);
-    this.store.dispatch(ProductActions.loadProducts());
-    this.selectedProduct$ = this.store.select(getCurrentProduct);
-    this.displayCode$ = this.store.select(getShowProductCode);
-  }
+  @Input()
+  errorMessage!: string;
+  @Input() products!: Product[];
+  @Input() displayCode!: boolean;
+  @Input() selectedProduct!: Product;
+  @Output() displayCodeChanged = new EventEmitter<boolean>();
+  @Output() initializeNewProduct = new EventEmitter<void>();
+  @Output() productWasSelected = new EventEmitter<Product>();
 
   checkChanged(): void {
-    this.store.dispatch(ProductActions.toggleProductCode());
+    this.displayCodeChanged.emit();
   }
-
   newProduct(): void {
-    this.store.dispatch(ProductActions.initializeCurrentProduct());
+    this.initializeNewProduct.emit();
   }
-
   productSelected(product: Product): void {
-    this.store.dispatch(
-      ProductActions.setCurrentProduct({ currentProductId: product.id })
-    );
+    this.productWasSelected.emit(product);
   }
 }
