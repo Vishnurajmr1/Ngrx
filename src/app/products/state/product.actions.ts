@@ -45,10 +45,29 @@ export const updateProductFailure = createAction(
 
 export const createProduct = createAction(
   '[Product] Create Product',
-  props<{ newProduct: Product }>()
+  props<{ product: Product }>()
 );
 
 export const createProductSuccess = createAction(
-  '[Product] Create Product Success'
+  '[Product] Create Product Success',
+  props<{ product: Product }>()
 );
-export const creatProductFail = createAction('[Product] Create Fail');
+export const creatProductFailure = createAction(
+  '[Product] Create Fail',
+  props<{ error: string }>()
+);
+
+export const deleteProduct=createAction(
+  '[Product] Delete Product',
+  props<{productId:number}>()
+)
+
+export const deleteProductSuccess=createAction(
+  '[Product] Delete Product Success',
+  props<{productId:number}>()
+)
+
+export const deleteProductFailure=createAction(
+  '[Product] Delete Product Fail',
+  props<{error:string}>()
+)
