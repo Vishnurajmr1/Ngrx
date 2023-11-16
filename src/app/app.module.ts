@@ -43,6 +43,6 @@ import { EffectsModule } from '@ngrx/effects';
     WelcomeComponent,
     PageNotFoundComponent,
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
